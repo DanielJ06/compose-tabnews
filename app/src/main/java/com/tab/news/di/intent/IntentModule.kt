@@ -1,6 +1,6 @@
 package com.tab.news.di.intent
 
-import com.tab.news.di.intent.home.HomeNavigationImpl
+import com.tab.news.intent.navigation.home.HomeNavigationImpl
 import com.tab.news.presentation.home.HomeNavigation
 import dagger.Binds
 import dagger.Module

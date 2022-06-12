@@ -7,6 +7,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 class Navigator(private val applicationScope: CoroutineScope) {
 
@@ -36,3 +39,6 @@ sealed class NavigationCommand {
         val navOptions: NavOptions? = null,
     ) : NavigationCommand()
 }
+
+fun String.encode(): String = URLEncoder.encode(this, StandardCharsets.UTF_8.toString())
+fun String.decode(): String = URLDecoder.decode(this, StandardCharsets.UTF_8.toString())

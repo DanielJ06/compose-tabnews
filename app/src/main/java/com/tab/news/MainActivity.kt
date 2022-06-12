@@ -48,7 +48,10 @@ fun ObserveAndNavigate(
         tabNewsViewModel.navigator.commands.collect { cmd ->
             when (cmd) {
                 is NavigationCommand.Navigate -> {
-                    navController.navigate(cmd.destination)
+                    navController.navigate(
+                        route = cmd.destination,
+                        navOptions = cmd.navOptions
+                    )
                 }
             }
         }

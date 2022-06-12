@@ -1,5 +1,9 @@
 package com.tab.news.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Content(
     val id: String,
     val ownerId: String,
@@ -10,4 +14,5 @@ data class Content(
     val updatedAt: String,
     val publishedAt: String,
     val username: String,
-)
+    val childrenDeepCount: Int
+) : Parcelable

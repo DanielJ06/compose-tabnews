@@ -12,5 +12,6 @@ fun ContentResponse.toModel() = Content(
     createdAt = createdAt,
     updatedAt = updatedAt,
     publishedAt = publishedAt,
-    username = username
+    username = username,
+    childrenDeepCount = childrenDeepCount
 )

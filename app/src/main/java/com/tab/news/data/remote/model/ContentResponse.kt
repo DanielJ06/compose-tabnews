@@ -29,4 +29,7 @@ data class ContentResponse(
 
     @SerializedName("username")
     val username: String,
+
+    @SerializedName("children_deep_count")
+    val childrenDeepCount: Int
 )

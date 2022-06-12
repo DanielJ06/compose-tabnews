@@ -1,5 +1,7 @@
 package com.tab.news.presentation.home
 
+import com.tab.news.domain.model.Content
+
 interface HomeNavigation {
-    fun navigateToNextPage()
+    fun navigateToNextPage(postContent: Content)
 }
