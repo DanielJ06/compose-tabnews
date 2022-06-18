@@ -8,6 +8,7 @@ import com.tab.news.intent.utils.TabNewsNavType
 
 sealed class RootDestinations(val route: String) {
     object Home : RootDestinations("main")
+    object Bookmarks : RootDestinations("bookmark")
 }
 
 sealed class GraphDestinations(
@@ -19,6 +20,10 @@ sealed class GraphDestinations(
 
     open val arguments: List<NamedNavArgument> = emptyList()
     fun createRoute() = "${root.route}/$route"
+
+    object BookmarkRoutes {
+        object Bookmarked : GraphDestinations(root = RootDestinations.Bookmarks, route = "bookmarked")
+    }
 
     object HomeRoutes {
 

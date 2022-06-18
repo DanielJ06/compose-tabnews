@@ -30,12 +30,8 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 .fillMaxWidth()
                 .padding(20.dp)
         ) {
-            Button(onClick = {}) {
-                Text(text = "Create a reading list")
-            }
-
-            Button(onClick = {}) {
-                Text(text = "See your reading lists")
+            Button(onClick = { viewModel.navigateToBookmarked() }) {
+                Text(text = "See your bookmarked content", color = Color.White)
             }
         }
         LazyColumn(

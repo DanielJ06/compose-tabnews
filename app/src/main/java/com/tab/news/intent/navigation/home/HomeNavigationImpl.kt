@@ -10,6 +10,12 @@ class HomeNavigationImpl @Inject constructor(
     private val navigator: Navigator
 ) : HomeNavigation {
 
+    override fun navigateToBookmarked() {
+        navigator.navigate(
+            route = GraphDestinations.BookmarkRoutes.Bookmarked.createRoute()
+        ) {}
+    }
+
     override fun navigateToNextPage(postContent: Content) {
         navigator.navigate(
             route = GraphDestinations.HomeRoutes.ContentDetails.createRoute(

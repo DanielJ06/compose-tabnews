@@ -4,17 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.tab.news.intent.*
+import com.tab.news.intent.NavigationCommand
+import com.tab.news.intent.RootDestinations
+import com.tab.news.intent.graphs.addBookmarkNavGraph
+import com.tab.news.intent.graphs.addHomeNavGraph
 import com.tab.news.ui.theme.TabnewsTheme
+import com.tab.news.uikit.components.bottomNavigation.TabNewsBottomNavigation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -28,11 +33,25 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
 
             TabnewsTheme {
-                Scaffold {
-                    ObserveAndNavigate(
+                ObserveAndNavigate(
+                    navController = navController,
+                    tabNewsViewModel = tabNewsViewModel
+                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    NavHost(
                         navController = navController,
-                        tabNewsViewModel = tabNewsViewModel
-                    )
+                        startDestination = RootDestinations.Home.route
+                    ) {
+                        addHomeNavGraph()
+                        addBookmarkNavGraph()
+                    }
+                    TabNewsBottomNavigation(onClick = { route ->
+                        tabNewsViewModel.navigator.navigate(route) {
+                            popUpTo(route)
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }, navController = navController)
                 }
             }
         }
@@ -55,12 +74,5 @@ fun ObserveAndNavigate(
                 }
             }
         }
-    }
-
-    NavHost(
-        navController = navController,
-        startDestination = RootDestinations.Home.route
-    ) {
-        addHomeNavGraph()
     }
 }

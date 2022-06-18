@@ -1,4 +1,4 @@
-package com.tab.news.presentation.home
+package com.tab.news.presentation.bookmark
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,30 +13,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val navigation: HomeNavigation,
-    private val repository: ContentsRepository,
+class BookmarkViewModel @Inject constructor(
+    private val repository: ContentsRepository
 ) : ViewModel() {
 
     init {
-        getContents()
+        getBookmarkedContent()
     }
 
-    var viewState by mutableStateOf(HomeViewState())
+    var viewState by mutableStateOf(BookmarkViewState())
 
-    fun navigateToContentDetails(content: Content) {
-        navigation.navigateToNextPage(content)
-    }
-
-    fun navigateToBookmarked() {
-        navigation.navigateToBookmarked()
-    }
-
-    private fun getContents() {
+    private fun getBookmarkedContent() {
         viewModelScope.launch {
-            repository.getAllContents().collect {
+            repository.getAllBookmarkContent().collect {
                 if (it.isNotEmpty()) {
-                    viewState = viewState.copy(contents = it)
+                    viewState = viewState.copy(
+                        bookmarkedPosts = it
+                    )
                 }
             }
         }

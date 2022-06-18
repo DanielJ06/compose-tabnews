@@ -5,14 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tab.news.domain.model.Content
-import com.tab.news.presentation.home.HomeNavigation
+import com.tab.news.domain.repository.ContentsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ContentDetailsViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
+    private val contentsRepository: ContentsRepository
 ) : ViewModel() {
 
     var viewState by mutableStateOf(ContentDetailsViewState())
@@ -21,6 +24,23 @@ class ContentDetailsViewModel @Inject constructor(
         val postContent = savedStateHandle.get<Content>("postContent")
         postContent?.let {
             viewState = viewState.copy(contentDetail = it)
+            verifyIfIsBookmarked(it.id)
+        }
+    }
+
+    private fun verifyIfIsBookmarked(postContentId: String) {
+        viewModelScope.launch {
+            val isBookmarked = contentsRepository.verifyIfIsBookmarked(postContentId = postContentId)
+            viewState = viewState.copy(
+                isBookmarked = isBookmarked
+            )
+        }
+    }
+
+    fun handleBookmark(postContent: Content) {
+        viewModelScope.launch {
+            contentsRepository.bookmarkContent(postContent)
+            viewState = viewState.copy(isBookmarked = true)
         }
     }
 

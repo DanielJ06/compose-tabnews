@@ -1,5 +1,8 @@
 package com.tab.news.di
 
+import android.app.Application
+import androidx.room.Room
+import com.tab.news.data.local.TabNewsDatabase
 import com.tab.news.intent.Navigator
 import dagger.Module
 import dagger.Provides
@@ -23,6 +26,16 @@ object AppModule {
     @Provides
     fun providesNavigator(): Navigator {
         return Navigator(CoroutineScope(SupervisorJob() + Dispatchers.Main))
+    }
+
+    @Provides
+    @Singleton
+    fun provideTabNewsDatabase(app: Application): TabNewsDatabase {
+        return Room.databaseBuilder(
+            app,
+            TabNewsDatabase::class.java,
+            "tabnewsdb.db"
+        ).build()
     }
 
     @Singleton
